@@ -18,7 +18,7 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
         //https://docs.openshift.com/container-platform/3.7/admin_solutions/user_role_mgmt.html#share-templates-cluster
 
         //oc policy add-role-to-user registry-viewer standalone-jenkins/jenkins
-        def name = "${"${JOB_NAME}-postgres".replaceAll(" ","-")replaceFirst("^[^/]+/", '').replace("/", '-')}"
+        def name = "${"${JOB_NAME}-postgres".replaceAll(" ","-").replaceFirst("^[^/]+/", '').replace("/", '-')}"
         print name
         def labels_from = "${JOB_NAME.replace('/', '-')}"
         print labels_from
