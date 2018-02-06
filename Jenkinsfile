@@ -28,8 +28,10 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
                 .replaceAll("\\s","-")
                 .replaceFirst("^[^/]+/", '')
                 .replace("/", '-');
-
         print labels_from
+
+        openshift.selector( 'all', [ from:labels_from ] ).delete()
+
         def created = openshift.newApp(
                 '--template=postgresql-ephemeral',
                 "--name='" + name+"'",
