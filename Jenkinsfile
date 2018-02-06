@@ -23,7 +23,7 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
                 .replaceFirst("^[^/]+/", '')
                 .replace("/", '-');
         print name
-        def labels_from = JOB_NAME
+        def labels_from = "${JOB_NAME}"
                 .replace('/', '-')
                 .replaceAll("\\s","-")
         print labels_from
