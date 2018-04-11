@@ -1,7 +1,7 @@
 import java.security.MessageDigest
 
 def static generateMD5_A(String s){
-    MessageDigest.getInstance("MD5").digest(s.bytes).encodeHex().toString()
+    return MessageDigest.getInstance("MD5").digest(s.bytes).encodeHex().toString()
 }
 
 
