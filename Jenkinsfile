@@ -1,3 +1,10 @@
+import java.security.MessageDigest
+
+def static generateMD5_A(String s){
+    MessageDigest.getInstance("MD5").digest(s.bytes).encodeHex().toString()
+}
+
+
 openshift.withCluster() { // Use "default" cluster or fallback to OpenShift cluster detection
     echo "Hello from the project running Jenkins: ${openshift.project()}"
 
@@ -10,6 +17,7 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
         }
 
     }
+
 
     stage('Deploy test') {
 
@@ -25,10 +33,10 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
         echo "name="
         print name
 
-        def labels_from = "${JOB_NAME}"
+        def labels_from = generateMD5_A("${JOB_NAME}"
                 .replaceAll("\\s","-")
                 .replaceFirst("^[^/]+/", '')
-                .replace("/", '-');
+                .replace("/", '-'));
         echo "labels_from="
         print labels_from
 
