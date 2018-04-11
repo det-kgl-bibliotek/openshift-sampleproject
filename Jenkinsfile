@@ -39,7 +39,7 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
 
         echo "new-app created ${created.count()} objects named: ${created.names()}"
 
-        echo created.describe()
+        created.describe()
 
 //            for ( obj in created ) {
 //                obj.metadata.labels[ "build" ] = JOB_NAME
