@@ -39,13 +39,8 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
             //            oc delete project sampleproject-other-branch-postgres
             openshift.selector("project/${projectName}").delete()
 
-            // There are no guarantees in life, so let's interrupt these operations if they
-            // take more than 10 minutes and fail this script.
-            timeout(10) {
-                waitUntil{
-                    openshift.selector("project/${projectName}").count() == 0
-                }
-            }
+            sh "until ! oc get project ${projectName}; do date;sleep 2; done"
+
         }
 
         openshift.verbose(false) // Turn it back
