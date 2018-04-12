@@ -26,10 +26,10 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
         //https://docs.openshift.com/container-platform/3.7/admin_solutions/user_role_mgmt.html#share-templates-cluster
 
         //oc policy add-role-to-user registry-viewer standalone-jenkins/jenkins
-        def name = generateMD5_A("${JOB_NAME}-postgres"
+        def name = "${JOB_NAME}-postgres"
                 .replaceAll("\\s","-")
                 .replaceFirst("^[^/]+/", '')
-                .replace("/", '-'));
+                .replace("/", '-');
         echo "name="
         print name
 
@@ -40,17 +40,30 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
         echo "labels_from="
         print labels_from
 
-        openshift.selector( 'all', [ from:labels_from ] ).delete()
-        openshift.selector( 'secrets', [ from:labels_from ] ).delete()
 
-        def created = openshift.newApp(
-                '--template=postgresql-ephemeral',
-                "--name='" + name+"'",
-                "--labels=from='" + labels_from+"'")
+        openshift.verbose()
+        // Get details printed to the Jenkins console and pass high --log-level to all oc commands
 
-        echo "new-app created ${created.count()} objects named: ${created.names()}"
+        try {
+            openshift.newProject(name)
+        } catch (e){
 
-        created.describe()
+        }
+
+        openshift.withProject(name) {
+
+            openshift.selector('all', [from: labels_from]).delete()
+            openshift.selector('secrets', [from: labels_from]).delete()
+
+            def created = openshift.newApp(
+                    '--template=postgresql-ephemeral',
+                    "--name='" + name + "'",
+                    "--labels=from='" + labels_from + "'")
+
+            echo "new-app created ${created.count()} objects named: ${created.names()}"
+
+            created.describe()
+        }
 
 //            for ( obj in created ) {
 //                obj.metadata.labels[ "build" ] = JOB_NAME
