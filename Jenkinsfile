@@ -32,11 +32,8 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
 
         openshift.selector("project/${projectName}").delete()
 
-        try {
-            sh "until ! oc get project ${projectName}; do date;sleep 2; done; exit 0"
-        } catch (e){
+        sh "until ! oc get project ${projectName}; do date;sleep 2; done; exit 0"
 
-        }
 
         openshift.newProject(projectName)
 
