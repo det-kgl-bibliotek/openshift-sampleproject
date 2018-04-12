@@ -29,8 +29,11 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
         echo "name="
         print projectName
 
+        try {
+            openshift.selector("project/${projectName}").delete()
+        } catch (e){
 
-        openshift.selector("project/${projectName}").delete()
+        }
 
         sh "until ! oc get project ${projectName}; do date;sleep 2; done; exit 0"
 
