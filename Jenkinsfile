@@ -26,17 +26,17 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
         //https://docs.openshift.com/container-platform/3.7/admin_solutions/user_role_mgmt.html#share-templates-cluster
 
         //oc policy add-role-to-user registry-viewer standalone-jenkins/jenkins
-        def name = "${JOB_NAME}-postgres"
-                .replaceAll("\\s","-")
-                .replaceFirst("^[^/]+/", '')
-                .replace("/", '-');
-        echo "name="
-        print name
-
-        def labels_from = generateMD5_A("${JOB_NAME}"
+        def name = generateMD5_A("${JOB_NAME}-postgres"
                 .replaceAll("\\s","-")
                 .replaceFirst("^[^/]+/", '')
                 .replace("/", '-'));
+        echo "name="
+        print name
+
+        def labels_from = "${JOB_NAME}"
+                .replaceAll("\\s","-")
+                .replaceFirst("^[^/]+/", '')
+                .replace("/", '-');
         echo "labels_from="
         print labels_from
 
