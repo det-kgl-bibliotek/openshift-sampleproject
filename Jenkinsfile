@@ -41,11 +41,17 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
         print labels_from
 
 
+        openshift.verbose()
+        // Get details printed to the Jenkins console and pass high --log-level to all oc commands
+
         try {
             openshift.newProject(name)
         } catch (e){
 
         }
+
+        openshift.verbose(false) // Turn it back
+
 
         openshift.withProject(name) {
 
