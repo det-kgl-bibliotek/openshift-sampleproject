@@ -37,20 +37,13 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
         } catch (e) {
 
             //            oc delete project sampleproject-other-branch-postgres
-            project = openshift.selector("project/${projectName}")
-
-            project.delete()
+            openshift.selector("project/${projectName}").delete()
 
             // There are no guarantees in life, so let's interrupt these operations if they
             // take more than 10 minutes and fail this script.
             timeout(10) {
-
-
-                // We can use watch to execute a closure body each objects selected by a Selector
-                // change. The watch will only terminate when the body returns true.
-                project.watch {
-                    // End the watch only once the project have been deleted
-                    return it.count() == 0
+                waitUntil{
+                    openshift.selector("project/${projectName}").count() == 0
                 }
             }
         }
