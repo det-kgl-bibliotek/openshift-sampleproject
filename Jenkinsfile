@@ -29,21 +29,16 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
         echo "name="
         print projectName
 
-        openshift.verbose()
-        // Get details printed to the Jenkins console and pass high --log-level to all oc commands
+
+        openshift.selector("project/${projectName}").delete()
 
         try {
-            openshift.newProject(projectName)
-        } catch (e) {
-
-            //            oc delete project sampleproject-other-branch-postgres
-            openshift.selector("project/${projectName}").delete()
-
-            sh "until ! oc get project ${projectName}; do date;sleep 2; done"
+            sh "until ! oc get project ${projectName}; do date;sleep 2; done; exit 0"
+        } catch (e){
 
         }
 
-        openshift.verbose(false) // Turn it back
+        openshift.newProject(projectName)
 
 
         openshift.withProject(projectName) {
