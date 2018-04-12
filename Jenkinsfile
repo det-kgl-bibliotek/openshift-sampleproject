@@ -28,6 +28,7 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
         //oc policy add-role-to-user registry-viewer standalone-jenkins/jenkins
         def name = "${JOB_NAME}-postgres"
                 .replaceAll("\\s","-")
+                .replaceAll("_","-")
                 .replaceFirst("^[^/]+/", '')
                 .replace("/", '-');
         echo "name="
@@ -35,6 +36,7 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
 
         def labels_from = "${JOB_NAME}"
                 .replaceAll("\\s","-")
+                .replaceAll("_","-")
                 .replaceFirst("^[^/]+/", '')
                 .replace("/", '-');
         echo "labels_from="
