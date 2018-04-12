@@ -1,6 +1,6 @@
 import java.security.MessageDigest
 
-String generateMD5_A(String s){
+String generateMD5_A(String s) {
     return MessageDigest.getInstance("MD5").digest(s.bytes).encodeHex().toString()
 }
 
@@ -21,26 +21,26 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
 
     stage('Deploy test') {
 
-
         //TODO jenkins must have right on openshift project for this to work
         //https://docs.openshift.com/container-platform/3.7/admin_solutions/user_role_mgmt.html#share-templates-cluster
 
         //oc policy add-role-to-user registry-viewer standalone-jenkins/jenkins
         def name = "${JOB_NAME}-postgres"
-                .replaceAll("^openshift-","")
-                .replaceAll("\\s","-")
-                .replaceAll("_","-")
+                .replaceAll("\\s", "-")
+                .replaceAll("_", "-")
                 .replaceFirst("^[^/]+/", '')
-                .replace("/", '-');
+                .replace("/", '-')
+                .replaceAll("^openshift-", "")
+
         echo "name="
         print name
 
         def labels_from = "${JOB_NAME}"
-                .replaceAll("^openshift-","")
-                .replaceAll("\\s","-")
-                .replaceAll("_","-")
+                .replaceAll("\\s", "-")
+                .replaceAll("_", "-")
                 .replaceFirst("^[^/]+/", '')
-                .replace("/", '-');
+                .replace("/", '-')
+                .replaceAll("^openshift-", "")
         echo "labels_from="
         print labels_from
 
@@ -50,7 +50,7 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
 
         try {
             openshift.newProject(name)
-        } catch (e){
+        } catch (e) {
 
         }
 
@@ -75,7 +75,6 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
 //            for ( obj in created ) {
 //                obj.metadata.labels[ "build" ] = JOB_NAME
 //            }
-
 
 //            JOB_NAME=det-kgl-bibliotek/openshift-jenkins-attempt/master
     }
