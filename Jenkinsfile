@@ -50,6 +50,20 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
             sh "mvn clean package"
         }
     }
+
+    stage('Cleanup') {
+
+        String projectName = encodeName("${JOB_NAME}")
+            echo "name=${projectName}"
+
+        //Delete the project, ignore errors if the project does not exist
+        try {
+            openshift.selector("project/${projectName}").delete()
+        } catch (e) {
+
+        }
+
+    }
 }
 
 private void recreateProject(String projectName) {
